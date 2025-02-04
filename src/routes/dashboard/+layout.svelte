@@ -85,7 +85,7 @@
         transform
         flex-col
         border-r border-gray-200
-        bg-white
+        bg-[#002057]
         text-gray-800
         shadow-md
         transition-transform
@@ -98,9 +98,9 @@
       "
 	>
 		<!-- Logo Row -->
-		<div class="flex items-center justify-between bg-white px-4 py-4 sm:justify-start">
+		<div class="flex items-center justify-between bg-[#002057] px-4 py-4 sm:justify-start">
 			<!-- Logo / Brand -->
-			<button on:click={() => goto('/')} class="text-2xl font-bold text-[#002057]">
+			<button on:click={() => goto('/')} class="text-2xl font-bold text-[#FFFFFF]">
 				MedMaster
 			</button>
 
@@ -133,7 +133,7 @@
 						on:click={() => handleNavClick(item)}
 						class="flex items-center space-x-3 rounded-md
                      px-4 py-3 text-left text-lg font-medium
-                     transition-colors hover:bg-gray-100 hover:text-[#00C383]"
+                     transition-colors hover:bg-[#008D6E] hover:text-[#00C383]"
 					>
 						{#if item.icon}
 							<svg
@@ -149,7 +149,7 @@
 								<path d={item.icon} />
 							</svg>
 						{/if}
-						<span>{item.title}</span>
+						<span class="text-[#FFFFFF]">{item.title}</span>
 					</button>
 				{/each}
 
@@ -161,7 +161,7 @@
 					<button
 						on:click={() => handleNavClick(other)}
 						class="block w-full rounded-md px-4 py-3 text-left text-lg font-medium
-                     transition-colors hover:bg-gray-100 hover:text-[#00C383]"
+                     transition-colors hover:bg-[#008D6E] hover:text-[#00C383]"
 					>
 						{other.title}
 					</button>
