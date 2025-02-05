@@ -1,9 +1,13 @@
 <script>
 	export let title;
 	export let description;
+	export let link;
 
+	import { goto } from '$app/navigation';
+
+	// Function to handle the card click and navigate to the corresponding link
 	function handleClick() {
-		alert(`More info about "${title}" clicked!`);
+		goto(link);
 	}
 </script>
 

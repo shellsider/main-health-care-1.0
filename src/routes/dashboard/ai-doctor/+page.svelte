@@ -1,7 +1,7 @@
 <script>
 	import axios from 'axios';
 	let file = null;
-	let language = 'en'; // Default to English; user can choose "hi" for Hindi
+	let language = 'en'; // default to English
 	let inference = '';
 	let audioSrc = '';
 	let isLoading = false;
@@ -12,10 +12,9 @@
 			error = 'Please upload an image or PDF file.';
 			return;
 		}
-		// Clear previous results and errors
+		error = '';
 		inference = '';
 		audioSrc = '';
-		error = '';
 		isLoading = true;
 
 		const formData = new FormData();
@@ -23,15 +22,15 @@
 		formData.append('language', language);
 
 		try {
-			const response = await axios.post('/api/radiology', formData, {
+			const response = await axios.post('/api/ai-doctor', formData, {
 				headers: { 'Content-Type': 'multipart/form-data' }
 			});
-			// Response includes { inference: "...", audio: "BASE64_STRING" }
+			// Response contains { inference: "...", audio: "BASE64_STRING" }
 			inference = response.data.inference;
 			audioSrc = 'data:audio/mp3;base64,' + response.data.audio;
 		} catch (err) {
 			console.error(err);
-			error = 'An error occurred while analyzing the image.';
+			error = 'An error occurred while generating the inference.';
 		} finally {
 			isLoading = false;
 		}
@@ -43,7 +42,7 @@
 </script>
 
 <div class="mx-auto flex max-w-2xl flex-col items-center p-4 sm:p-6">
-	<h1 class="mb-6 text-center text-2xl font-bold">Radiology Inference Analyzer</h1>
+	<h1 class="mb-6 text-center text-2xl font-bold">AI Doctor</h1>
 
 	<!-- File input -->
 	<input
@@ -54,7 +53,7 @@
 	/>
 
 	<!-- Language selection -->
-	<div class="mb-4 w-full">
+	<div class="mb-4">
 		<label class="mr-2 font-semibold">Select Language:</label>
 		<select bind:value={language} class="rounded border p-1">
 			<option value="en">English</option>
@@ -93,7 +92,7 @@
 
 	{#if inference && !isLoading}
 		<div class="mt-6 w-full rounded bg-gray-100 p-6 shadow">
-			<h2 class="mb-4 text-xl font-bold">Radiology Inference</h2>
+			<h2 class="mb-4 text-xl font-bold">AI Doctor Inference</h2>
 			<p class="whitespace-pre-wrap">{inference}</p>
 			{#if audioSrc}
 				<audio controls class="mt-4" src={audioSrc}></audio>

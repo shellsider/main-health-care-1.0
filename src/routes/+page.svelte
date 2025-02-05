@@ -5,20 +5,30 @@
 
 	// Feature data array (title, description, etc.).
 	const features = [
-		{ title: 'General Health Support', description: 'Advices General Medication basedon symtopms' },
 		{
-			title: 'Report Ineference Generaor',
-			description: 'Drafts a first drawn inefernece based on report'
+			title: 'General Health Support',
+			description: 'Advices General Medication based on symptoms',
+			link: '/dashboard/general-health-support'
+		},
+		{
+			title: 'Report Inference Generator',
+			description: 'Drafts a first drawn inference based on the report',
+			link: '/dashboard/report-ineference'
 		},
 		{
 			title: 'MBTI Mental Health Chatbot',
-			description: 'MBTI enabled personalised chatbot for mental health support'
+			description: 'MBTI-enabled personalized chatbot for mental health support',
+			link: '/dashboard/mbti-chatbot'
 		},
-		{ title: 'Radiology', description: 'Gives Reports based on Radiology' },
-		{ title: 'Task 5', description: 'Placeholder for task 5' },
-		{ title: 'Task 6', description: 'Placeholder for task 6' },
-		{ title: 'Task 7', description: 'Placeholder for task 7' },
-		{ title: 'Task 8', description: 'Placeholder for task 8' }
+		{
+			title: 'Radiology',
+			description: 'Gives Reports based on Radiology',
+			link: '/dashboard/radiology'
+		},
+		{ title: 'Task 5', description: 'Placeholder for task 5', link: '/dashboard/task5' },
+		{ title: 'Task 6', description: 'Placeholder for task 6', link: '/dashboard/task6' },
+		{ title: 'Task 7', description: 'Placeholder for task 7', link: '/dashboard/task7' },
+		{ title: 'Task 8', description: 'Placeholder for task 8', link: '/dashboard/task8' }
 	];
 
 	function handleDashboardClick() {
@@ -60,7 +70,7 @@
 		class="mx-auto mb-[75px] mt-[75px] grid max-w-7xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4"
 	>
 		{#each features as feature}
-			<Card title={feature.title} description={feature.description} />
+			<Card title={feature.title} description={feature.description} link={feature.link} />
 		{/each}
 	</section>
 
