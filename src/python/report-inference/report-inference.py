@@ -6,6 +6,7 @@ from pdf2image import convert_from_path
 from pytesseract import image_to_string
 import google.generativeai as genai
 from dotenv import load_dotenv
+from deep_translator import GoogleTranslator
 
 # Load environment variables
 load_dotenv()
@@ -34,15 +35,21 @@ def generate_inference(prompt):
     except Exception as e:
         return f"Error generating inference: {e}"
 
+def translate_to_hindi(text):
+    try:
+        return GoogleTranslator(source="en", target="hi").translate(text)
+    except Exception as e:
+        return f"Error translating text: {e}"
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("No PDF file path provided", file=sys.stderr)
         sys.exit(1)
     pdf_path = sys.argv[1]
+    language = sys.argv[2] if len(sys.argv) > 2 else "en"
 
     extracted_text = extract_text_from_pdf(pdf_path)
     
-    # Example prompt: Adjust instructions as needed.
     prompt = extracted_text + """
     
 Provide inferences and plausible remedies based on the data.
@@ -52,6 +59,7 @@ Provide inferences and plausible remedies based on the data.
 - Summarize key values in a tabular format and mark those out of the normal range.
 - Include three segments: 'Inferences', 'Plausible Remedies', and 'Disclaimer'.
 """
-
     result = generate_inference(prompt)
+    if language.lower() == "hi":
+        result = translate_to_hindi(result)
     print(result)

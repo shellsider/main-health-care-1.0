@@ -5,7 +5,6 @@ import path from 'path';
 import { tmpdir } from 'os';
 import { fileURLToPath } from 'url';
 
-// Compute __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,7 +17,10 @@ export async function POST({ request }) {
             return new Response('No file uploaded', { status: 400 });
         }
 
-        // Convert the file data (ArrayBuffer) to a Node.js Buffer
+        // Get language from form data; default to "en"
+        const languageField = formData.get('language') || "en";
+
+        // Convert file data (ArrayBuffer) to Buffer
         const arrayBuffer = await fileField.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
@@ -29,12 +31,11 @@ export async function POST({ request }) {
         await fs.writeFile(filePath, buffer);
 
         // Compute the absolute path to the Python script.
-        // Relative to +server.js: go up three directories, then into src/python/report-inference/
-        // const scriptPath = path.join(__dirname, '../../../python/report-inference/report_inference.py');
+        // (Make sure the path matches your file name exactly.)
         const scriptPath = 'E:/3) My Projects/Hackathon/1_Health_care/main-health-care-1.0/src/python/report-inference/report-inference.py'
 
-        // Spawn the Python process and pass the file path as an argument
-        const pythonProcess = spawn('python', [scriptPath, filePath]);
+        // Spawn the Python process, passing filePath and language as arguments
+        const pythonProcess = spawn('python', [scriptPath, filePath, languageField]);
 
         let output = '';
         let errorOutput = '';
@@ -46,7 +47,6 @@ export async function POST({ request }) {
             errorOutput += data.toString();
         });
 
-        // Wait for the Python process to finish
         const exitCode = await new Promise((resolve) => {
             pythonProcess.on('close', resolve);
         });

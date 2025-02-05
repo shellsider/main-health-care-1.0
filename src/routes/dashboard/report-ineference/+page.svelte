@@ -3,30 +3,39 @@
 	import { marked } from 'marked';
 
 	let file = null;
+	let language = 'en'; // Default language is English ("hi" for Hindi)
 	let generatedInference = '';
 	let generatedInferenceHtml = '';
 	let isLoading = false;
 	let error = '';
 
-	// Convert markdown to HTML whenever generatedInference updates.
-	$: generatedInferenceHtml = marked(generatedInference);
+	// When the generated inference updates, convert it to HTML.
+	// If Hindi is selected, replace any fancy dashes with a standard hyphen.
+	$: {
+		let text = generatedInference;
+		if (language === 'hi') {
+			text = text.replace(/[–—]/g, '-');
+			// Optionally, remove duplicate pipes if any (uncomment if needed):
+			// text = text.replace(/\|\s*\|/g, '|');
+		}
+		generatedInferenceHtml = marked(text);
+	}
 
 	async function handleFileUpload() {
 		if (!file) {
 			error = 'Please upload a PDF file.';
 			return;
 		}
-
-		// Clear previously generated inference and errors.
+		// Clear previous results and errors.
 		generatedInference = '';
 		error = '';
 		isLoading = true;
 
 		const formData = new FormData();
 		formData.append('file', file);
+		formData.append('language', language);
 
 		try {
-			// Send the file as multipart/form-data.
 			const response = await axios.post('/api/report-inference', formData, {
 				headers: { 'Content-Type': 'multipart/form-data' }
 			});
@@ -53,6 +62,15 @@
 		class="mb-4 w-full rounded border p-2"
 	/>
 
+	<!-- Language selection -->
+	<div class="mb-4 w-full">
+		<label class="mr-2 font-semibold">Select Language:</label>
+		<select bind:value={language} class="rounded border p-1">
+			<option value="en">English</option>
+			<option value="hi">Hindi</option>
+		</select>
+	</div>
+
 	{#if error}
 		<p class="mb-4 text-red-500">{error}</p>
 	{/if}
@@ -65,7 +83,6 @@
 		{isLoading ? 'Analysing' : 'Generate Inference'}
 	</button>
 
-	<!-- Display spinner and text when loading -->
 	{#if isLoading}
 		<div class="mt-4 flex items-center">
 			<svg
@@ -83,7 +100,6 @@
 		</div>
 	{/if}
 
-	<!-- Show the generated inference when available and not loading -->
 	{#if generatedInference && !isLoading}
 		<div class="mt-6 w-full rounded bg-gray-100 p-6 shadow">
 			<h2 class="mb-4 text-xl font-bold">Generated Inference</h2>
@@ -95,7 +111,6 @@
 </div>
 
 <style>
-	/* Additional custom styling in case Tailwind Typography is not used */
 	.generated-inference table {
 		width: 100%;
 		border-collapse: collapse;
