@@ -15,6 +15,8 @@
 		let text = generatedInference;
 		if (language === 'hi') {
 			text = text.replace(/[–—]/g, '-');
+			// Optionally, remove duplicate pipes if any (uncomment if needed):
+			// text = text.replace(/\|\s*\|/g, '|');
 		}
 		generatedInferenceHtml = marked(text);
 	}

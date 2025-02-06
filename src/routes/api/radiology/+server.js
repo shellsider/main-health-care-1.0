@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { tmpdir } from 'os';
 import { fileURLToPath } from 'url';
+import { pathToPyhton } from '../../../python/path.helper';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,7 +34,7 @@ export async function POST({ request }) {
 
         // Compute the absolute path to the Python script.
         // Adjust the path if needed (here using an absolute path as an example).
-        const scriptPath = 'E:/3) My Projects/Hackathon/1_Health_care/main-health-care-1.0/src/python/radiology/radiology.py';
+        const scriptPath = `${pathToPython}/radiology/radiology.py`;
 
         // Spawn the Python process, passing the file path and language as arguments
         const pythonProcess = spawn('python', [scriptPath, filePath, languageField]);

@@ -24,6 +24,7 @@ If you make a differential, suggest some remedies for them. Do not add any numbe
 your response. Your response should be in one long paragraph. Also always answer as if you are answering to a real person.
 Do not say 'In the image I see' but say 'With what I see, I think you have ....'
 Don't respond as an AI model in markdown, your answer should mimic that of an actual doctor not an AI bot, 
+also provide home remedies for it, give three points exactly and dont excede them
 Keep your answer concise (max 2 sentences). No preamble, start your answer right away please"""
 
 def load_xray(file_path):
